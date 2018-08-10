@@ -2,32 +2,47 @@ package pl.com.rst.books.Book;
 
 import pl.com.rst.books.Discount.Discount;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Book {
-    public List<String> usedCodes = new ArrayList<>();
+
+    // TODO: price should be replaced by Money from Joda-Money
+    private float price;
+
+    private Discount largeOrderDiscount;
+    private Map<String, Discount> discounToCode;
+
+    private Set<String> usedCodes;
+
+    public Book() {
+        this.price = 0.0f;
+        this.largeOrderDiscount = null;
+        this.discounToCode = new HashMap<>();
+        this.usedCodes = new HashSet<>();
+    }
+
+    public Book(float price, Discount largeOrderDiscount, Map<String, Discount> discountToCode) {
+        this.price = price;
+        this.largeOrderDiscount = largeOrderDiscount;
+        this.discounToCode = discountToCode;
+
+        this.usedCodes = new HashSet<>();
+    }
 
     public float getPrice() {
-        return 12;
+        return price;
     }
 
     public Discount getLargeOrderDiscount() {
-        Discount discount = new Discount();
-        discount.type = "percent";
-        discount.discount = 10;
-        return discount;
+        return largeOrderDiscount;
     }
 
     public Discount getCodeDiscount(String code) {
-        Discount discount = new Discount();
-        discount.type = "money";
-        discount.discount = 25;
-        return discount;
+        return discounToCode.get(code);
     }
 
     public boolean isCodeNotUsed(String code) {
-        return usedCodes.contains(code);
+        return !usedCodes.contains(code);
     }
 
     public void markDiscountAsUsed(String code) {

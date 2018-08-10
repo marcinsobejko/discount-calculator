@@ -5,6 +5,10 @@ import pl.com.rst.books.Book.Book;
 import pl.com.rst.books.Book.BookRepository;
 import org.mockito.Mockito;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.any;
@@ -18,11 +22,11 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenAvaibleDiscountsIsEmpty() {
         // --- GIVEN ---
-        Book book = mock(Book.class);
-        BookRepository bookRepository = mock(BookRepository.class);
-        DiscountUtility discountUtility = spy(DiscountUtility.class);
+        final Book book = new Book(100.0f, null, null);
 
-        when(book.getPrice()).thenReturn(100f);
+        final BookRepository bookRepository = mock(BookRepository.class);
+        final DiscountUtility discountUtility = spy(DiscountUtility.class);
+
         when(discountUtility.getBookRepository()).thenReturn(bookRepository);
         when(bookRepository.getBook(anyLong())).thenReturn(book);
 
@@ -36,24 +40,24 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenAvaibleDiscountsIsCodeAndLargeOrder() {
         // --- GIVEN ---
-        Book book = mock(Book.class);
+        Discount largeOrderDiscount = new Discount();
+        largeOrderDiscount.discount = 20;
+        largeOrderDiscount.type = "money";
+
+        Discount discount1002 = new Discount();
+        discount1002.discount = 10;
+        discount1002.type = "money";
+
+        Map<String, Discount> discountToCode = new HashMap<>();
+        discountToCode.put("Abc", discount1002);
+
+        Book book = new Book(100.0f, largeOrderDiscount, discountToCode);
+
         BookRepository bookRepository = mock(BookRepository.class);
         DiscountUtility discountUtility = spy(DiscountUtility.class);
 
-        when(book.getPrice()).thenReturn(100f);
         when(discountUtility.getBookRepository()).thenReturn(bookRepository);
         when(bookRepository.getBook(anyLong())).thenReturn(book);
-
-        Discount value = new Discount();
-        value.discount = 10;
-        value.type = "money";
-        when(book.getCodeDiscount(any())).thenReturn(value);
-
-        value = new Discount();
-        value.discount = 20;
-        value.type = "money";
-        when(book.getLargeOrderDiscount()).thenReturn(value);
-        when(book.isCodeNotUsed(any())).thenReturn(true);
 
         // --- WHEN ---
         DiscountUtility.DiscountResult result = discountUtility.getDiscount("5", 20, "Abc", new String[]{"code", "large-order"});
@@ -65,25 +69,24 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsNotUsedForDiscountTypeCode() {
         // --- GIVEN ---
-        Book book = mock(Book.class);
+        Discount largeOrderDiscount = new Discount();
+        largeOrderDiscount.discount = 20;
+        largeOrderDiscount.type = "money";
+
+        Discount discount1002 = new Discount();
+        discount1002.discount = 10;
+        discount1002.type = "money";
+
+        Map<String, Discount> discountToCode = new HashMap<>();
+        discountToCode.put("Abc", discount1002);
+
+        Book book = new Book(100.0f, largeOrderDiscount, discountToCode);
+
         BookRepository bookRepository = mock(BookRepository.class);
         DiscountUtility discountUtility = spy(DiscountUtility.class);
 
-        when(book.getPrice()).thenReturn(100f);
         when(discountUtility.getBookRepository()).thenReturn(bookRepository);
         when(bookRepository.getBook(anyLong())).thenReturn(book);
-
-        Discount value = new Discount();
-        value.discount = 10;
-        value.type = "money";
-        Mockito.when(book.getCodeDiscount(any())).thenReturn(value);
-
-        value = new Discount();
-        value.discount = 20;
-        value.type = "money";
-        Mockito.when(book.getLargeOrderDiscount()).thenReturn(value);
-        Mockito.when(book.isCodeNotUsed(any())).thenReturn(true);
-
 
         // --- WHEN ---
         DiscountUtility.DiscountResult result = discountUtility.getDiscount("5", 20, "Abc", new String[]{"code"});
@@ -95,24 +98,25 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsUsedForDiscountTypeCode() {
         // --- GIVEN ---
-        Book book = mock(Book.class);
+        Discount largeOrderDiscount = new Discount();
+        largeOrderDiscount.discount = 20;
+        largeOrderDiscount.type = "money";
+
+        Discount discount1002 = new Discount();
+        discount1002.discount = 10;
+        discount1002.type = "money";
+
+        Map<String, Discount> discountToCode = new HashMap<>();
+        discountToCode.put("Abc", discount1002);
+
+        Book book = new Book(100.0f, largeOrderDiscount, discountToCode);
+        book.markDiscountAsUsed("Abc");
+
         BookRepository bookRepository = mock(BookRepository.class);
         DiscountUtility discountUtility = spy(DiscountUtility.class);
 
-        when(book.getPrice()).thenReturn(100f);
         when(discountUtility.getBookRepository()).thenReturn(bookRepository);
         when(bookRepository.getBook(anyLong())).thenReturn(book);
-
-        Discount value = new Discount();
-        value.discount = 10;
-        value.type = "money";
-        Mockito.when(book.getCodeDiscount(any())).thenReturn(value);
-
-        value = new Discount();
-        value.discount = 20;
-        value.type = "money";
-        Mockito.when(book.getLargeOrderDiscount()).thenReturn(value);
-        Mockito.when(book.isCodeNotUsed(any())).thenReturn(false);
 
         // --- WHEN ---
         DiscountUtility.DiscountResult result = discountUtility.getDiscount("5", 20, "Abc", new String[]{"code"});
@@ -124,24 +128,24 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsNotUsedForDiscountTypeLargeOrder() {
         // --- GIVEN ---
-        Book book = mock(Book.class);
+        Discount largeOrderDiscount = new Discount();
+        largeOrderDiscount.discount = 20;
+        largeOrderDiscount.type = "money";
+
+        Discount discount1002 = new Discount();
+        discount1002.discount = 10;
+        discount1002.type = "money";
+
+        Map<String, Discount> discountToCode = new HashMap<>();
+        discountToCode.put("Abc", discount1002);
+
+        Book book = new Book(100.0f, largeOrderDiscount, discountToCode);
+
         BookRepository bookRepository = mock(BookRepository.class);
         DiscountUtility discountUtility = spy(DiscountUtility.class);
 
-        when(book.getPrice()).thenReturn(100f);
         when(discountUtility.getBookRepository()).thenReturn(bookRepository);
         when(bookRepository.getBook(anyLong())).thenReturn(book);
-
-        Discount value = new Discount();
-        value.discount = 10;
-        value.type = "money";
-        Mockito.when(book.getCodeDiscount(any())).thenReturn(value);
-
-        value = new Discount();
-        value.discount = 20;
-        value.type = "money";
-        Mockito.when(book.getLargeOrderDiscount()).thenReturn(value);
-        Mockito.when(book.isCodeNotUsed(any())).thenReturn(true);
 
         // --- WHEN ---
         DiscountUtility.DiscountResult result = discountUtility.getDiscount("5", 3000, "Abc", new String[]{"large-order"});
@@ -153,24 +157,25 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsUsedForDiscountTypeLargeOrder() {
         // --- GIVEN ---
-        Book book = mock(Book.class);
+        Discount largeOrderDiscount = new Discount();
+        largeOrderDiscount.discount = 20;
+        largeOrderDiscount.type = "money";
+
+        Discount discount1002 = new Discount();
+        discount1002.discount = 10;
+        discount1002.type = "money";
+
+        Map<String, Discount> discountToCode = new HashMap<>();
+        discountToCode.put("Abc", discount1002);
+
+        Book book = new Book(100.0f, largeOrderDiscount, discountToCode);
+        book.markDiscountAsUsed("Abc");
+
         BookRepository bookRepository = mock(BookRepository.class);
         DiscountUtility discountUtility = spy(DiscountUtility.class);
 
-        when(book.getPrice()).thenReturn(100f);
         when(discountUtility.getBookRepository()).thenReturn(bookRepository);
         when(bookRepository.getBook(anyLong())).thenReturn(book);
-
-        Discount value = new Discount();
-        value.discount = 10;
-        value.type = "money";
-        Mockito.when(book.getCodeDiscount(any())).thenReturn(value);
-
-        value = new Discount();
-        value.discount = 20;
-        value.type = "money";
-        Mockito.when(book.getLargeOrderDiscount()).thenReturn(value);
-        Mockito.when(book.isCodeNotUsed(any())).thenReturn(false);
 
         // --- WHEN ---
         DiscountUtility.DiscountResult result = discountUtility.getDiscount("5", 20, "Abc", new String[]{"large-order"});
@@ -182,11 +187,9 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenBookNotExist() {
         // --- GIVEN ---
-        Book book = mock(Book.class);
         BookRepository bookRepository = mock(BookRepository.class);
         DiscountUtility discountUtility = spy(DiscountUtility.class);
 
-        when(book.getPrice()).thenReturn(100f);
         when(discountUtility.getBookRepository()).thenReturn(bookRepository);
         when(bookRepository.getBook(anyLong())).thenReturn(null);
 
