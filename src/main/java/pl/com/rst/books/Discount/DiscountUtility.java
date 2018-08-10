@@ -31,7 +31,7 @@ public class DiscountUtility {
 
                         Discount largeOrderDiscount = book.getLargeOrderDiscount();
                         if (orderPrice > 300) {
-                            totalDiscount += book.getPrice() * Utils.percentToFloat(largeOrderDiscount.discount);
+                            totalDiscount += book.getPrice() * Utils.percentToFloat(largeOrderDiscount.getDiscount());
                         }
                     }
 
@@ -48,7 +48,7 @@ public class DiscountUtility {
                     if (book.isCodeNotUsed(discountCode)) {
                         Discount codeDiscount = book.getCodeDiscount(discountCode);
                         if (codeDiscount.getType() == "percent") {
-                            totalDiscount += book.getPrice() * Utils.percentToFloat(codeDiscount.discount);
+                            totalDiscount += book.getPrice() * Utils.percentToFloat(codeDiscount.getDiscount());
                         } else if (codeDiscount.getType() == "money"){
                             totalDiscount += codeDiscount.getDiscount();
                         } else {

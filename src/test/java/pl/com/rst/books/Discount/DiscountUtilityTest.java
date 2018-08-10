@@ -3,15 +3,12 @@ package pl.com.rst.books.Discount;
 import org.junit.Test;
 import pl.com.rst.books.Book.Book;
 import pl.com.rst.books.Book.BookRepository;
-import org.mockito.Mockito;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
@@ -40,13 +37,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenAvaibleDiscountsIsCodeAndLargeOrder() {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount();
-        largeOrderDiscount.discount = 20;
-        largeOrderDiscount.type = "money";
-
-        Discount discount1002 = new Discount();
-        discount1002.discount = 10;
-        discount1002.type = "money";
+        Discount largeOrderDiscount = new Discount(20, "money");
+        Discount discount1002 = new Discount(10, "money");
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
@@ -69,13 +61,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsNotUsedForDiscountTypeCode() {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount();
-        largeOrderDiscount.discount = 20;
-        largeOrderDiscount.type = "money";
-
-        Discount discount1002 = new Discount();
-        discount1002.discount = 10;
-        discount1002.type = "money";
+        Discount largeOrderDiscount = new Discount(20, "money");
+        Discount discount1002 = new Discount(10, "money");
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
@@ -98,13 +85,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsUsedForDiscountTypeCode() {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount();
-        largeOrderDiscount.discount = 20;
-        largeOrderDiscount.type = "money";
-
-        Discount discount1002 = new Discount();
-        discount1002.discount = 10;
-        discount1002.type = "money";
+        Discount largeOrderDiscount = new Discount(20, "money");
+        Discount discount1002 = new Discount(10, "money");
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
@@ -128,13 +110,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsNotUsedForDiscountTypeLargeOrder() {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount();
-        largeOrderDiscount.discount = 20;
-        largeOrderDiscount.type = "money";
-
-        Discount discount1002 = new Discount();
-        discount1002.discount = 10;
-        discount1002.type = "money";
+        Discount largeOrderDiscount = new Discount(20, "money");
+        Discount discount1002 = new Discount(10, "money");
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
@@ -157,13 +134,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsUsedForDiscountTypeLargeOrder() {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount();
-        largeOrderDiscount.discount = 20;
-        largeOrderDiscount.type = "money";
-
-        Discount discount1002 = new Discount();
-        discount1002.discount = 10;
-        discount1002.type = "money";
+        Discount largeOrderDiscount = new Discount(20, "money");
+        Discount discount1002 = new Discount(10, "money");
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
