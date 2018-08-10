@@ -36,12 +36,18 @@ public class DiscountUtility {
 
                     if (book.isCodeNotUsed(discountCode)) {
                         Discount codeDiscount = book.getCodeDiscount(discountCode);
-                        if (codeDiscount.getType() == "percent") {
-                            totalDiscount += book.getPrice() * Utils.percentToFloat(codeDiscount.getDiscount());
-                        } else if (codeDiscount.getType() == "money"){
-                            totalDiscount += codeDiscount.getDiscount();
-                        } else {
-                            throw new IllegalArgumentException("Not recognized discount type");
+
+                        switch (codeDiscount.getType()) {
+                            case MONEY:
+                                totalDiscount += codeDiscount.getDiscount();
+                                break;
+
+                            case PERCENT:
+                                totalDiscount += book.getPrice() * Utils.percentToFloat(codeDiscount.getDiscount());
+                                break;
+
+                            default:
+                                throw new IllegalArgumentException("Not recognized discount type");
                         }
 
                         book.markDiscountAsUsed(discountCode);

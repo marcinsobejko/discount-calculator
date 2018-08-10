@@ -2,13 +2,25 @@ package pl.com.rst.books.Discount;
 
 public class Discount {
 
+    public static enum DiscountType {
+
+        MONEY("money"),
+        PERCENT("percent");
+
+        private String name;
+
+        DiscountType(String name) {
+            this.name = name;
+        }
+    }
+
     private int discount;
 
-    private String type;
+    private DiscountType type;
 
     public Discount() {}
 
-    public Discount(int discount, String type) {
+    public Discount(int discount, DiscountType type) {
         this.discount = discount;
         this.type = type;
     }
@@ -19,9 +31,9 @@ public class Discount {
         return discount;
     }
 
-    public void setType(String type) { this.type = type; }
+    public void setType(DiscountType type) { this.type = type; }
 
-    public String getType() {
+    public DiscountType getType() {
         return type;
     }
 }

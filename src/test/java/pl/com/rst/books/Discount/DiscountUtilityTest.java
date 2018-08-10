@@ -38,8 +38,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenAvaibleDiscountsIsCodeAndLargeOrder() throws BookNotFoundException {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount(20, "money");
-        Discount discount1002 = new Discount(10, "money");
+        Discount largeOrderDiscount = new Discount(20, Discount.DiscountType.MONEY);
+        Discount discount1002 = new Discount(10, Discount.DiscountType.MONEY);
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
@@ -62,8 +62,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsNotUsedForDiscountTypeCode() throws BookNotFoundException {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount(20, "money");
-        Discount discount1002 = new Discount(10, "money");
+        Discount largeOrderDiscount = new Discount(20, Discount.DiscountType.MONEY);
+        Discount discount1002 = new Discount(10, Discount.DiscountType.MONEY);
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
@@ -86,8 +86,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsUsedForDiscountTypeCode() throws BookNotFoundException {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount(20, "money");
-        Discount discount1002 = new Discount(10, "money");
+        Discount largeOrderDiscount = new Discount(20, Discount.DiscountType.MONEY);
+        Discount discount1002 = new Discount(10, Discount.DiscountType.MONEY);
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
@@ -111,8 +111,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsNotUsedForDiscountTypeLargeOrder() throws BookNotFoundException {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount(20, "money");
-        Discount discount1002 = new Discount(10, "money");
+        Discount largeOrderDiscount = new Discount(20, Discount.DiscountType.MONEY);
+        Discount discount1002 = new Discount(10, Discount.DiscountType.MONEY);
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
@@ -135,8 +135,8 @@ public class DiscountUtilityTest {
     @Test
     public void testGetDiscountWhenDiscountCodeIsUsedForDiscountTypeLargeOrder() throws BookNotFoundException {
         // --- GIVEN ---
-        Discount largeOrderDiscount = new Discount(20, "money");
-        Discount discount1002 = new Discount(10, "money");
+        Discount largeOrderDiscount = new Discount(20, Discount.DiscountType.MONEY);
+        Discount discount1002 = new Discount(10, Discount.DiscountType.MONEY);
 
         Map<String, Discount> discountToCode = new HashMap<>();
         discountToCode.put("Abc", discount1002);
