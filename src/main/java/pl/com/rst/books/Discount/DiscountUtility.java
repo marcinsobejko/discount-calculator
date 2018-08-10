@@ -4,63 +4,24 @@ import pl.com.rst.books.Book.Book;
 import pl.com.rst.books.Book.BookNotFoundException;
 import pl.com.rst.books.Book.BookRepository;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class DiscountUtility {
 
-    public long getDiscount(String bookId, float orderPrice, String discountCode, String[] availableDiscounts) throws BookNotFoundException {
-        if (availableDiscounts.length == 0 || availableDiscounts == null) {
-            return 0;
-        }
+    private static final float ORDER_PRICE_TRESHOLD_FOR_LARGE_ORDER = 300;
 
-        long id;
-        Book book;
-        boolean discountAlreadyCalculated = false;
-        float totalDiscount = 0;
+    public long getDiscount(String bookId, float orderPrice, String discountCode, Set<DiscountType> availableDiscounts) throws BookNotFoundException {
+        final Book book = getBookRepository().getBook(Long.valueOf(bookId));
 
-        for (String discount : availableDiscounts) {
-            switch (discount) {
-                case "large-order":
-                    if (!discountAlreadyCalculated) {
-                        id = Long.valueOf(bookId);
-                        book = getBookRepository().getBook(id);
-
-                        Discount largeOrderDiscount = book.getLargeOrderDiscount();
-                        if (orderPrice > 300) {
-                            totalDiscount += book.getPrice() * Utils.percentToFloat(largeOrderDiscount.getDiscount());
-                        }
-                    }
-
-                    break;
-                case "code":
-                    id = Long.valueOf(bookId);
-                    book = getBookRepository().getBook(id);
-
-                    if (book.isCodeNotUsed(discountCode)) {
-                        Discount codeDiscount = book.getCodeDiscount(discountCode);
-
-                        switch (codeDiscount.getType()) {
-                            case MONEY:
-                                totalDiscount += codeDiscount.getDiscount();
-                                break;
-
-                            case PERCENT:
-                                totalDiscount += book.getPrice() * Utils.percentToFloat(codeDiscount.getDiscount());
-                                break;
-
-                            default:
-                                throw new IllegalArgumentException("Not recognized discount type");
-                        }
-
-                        book.markDiscountAsUsed(discountCode);
-                    }
-
-                    discountAlreadyCalculated = true;
-                    break;
-            }
-        }
-
-        return (long) totalDiscount;
+        return (long) availableDiscounts.stream().mapToDouble(d -> d.calculate(book, orderPrice, discountCode)).sum();
     }
 
+    public boolean isArrayEmpty(Object[] array) {
+        return array == null || array.length == 0;
+    }
 
     public BookRepository getBookRepository() {
         return new BookRepository();
