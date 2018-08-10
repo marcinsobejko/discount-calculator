@@ -17,13 +17,7 @@ public final class DiscountUtility {
         // Not used in utils class
     }
 
-    public static long getDiscount(String bookId, float orderPrice, String discountCode, Set<DiscountType> availableDiscounts) throws BookNotFoundException {
-        final Book book = getBookRepository().getBook(Long.valueOf(bookId));
-
+    public static long getDiscount(Book book, float orderPrice, String discountCode, Set<DiscountType> availableDiscounts) {
         return (long) availableDiscounts.stream().mapToDouble(d -> d.calculate(book, orderPrice, discountCode)).sum();
-    }
-
-    public static BookRepository getBookRepository() {
-        return new BookRepository();
     }
 }
