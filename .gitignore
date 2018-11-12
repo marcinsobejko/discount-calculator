@@ -1,6 +1,7 @@
 /.gradle
 /local.properties
 /.idea
-/build
+/out
+/gradle
 *.iml
-/src/main/resources/application-dev.yml
+gradlew*
