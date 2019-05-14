@@ -1,6 +1,6 @@
-package pl.com.rst.books.model.order;
+package pl.com.rst.books.model.discount;
 
-import pl.com.rst.books.model.discount.Discount;
+import pl.com.rst.books.model.order.BookOrder;
 
 import java.util.Arrays;
 import java.util.HashSet;

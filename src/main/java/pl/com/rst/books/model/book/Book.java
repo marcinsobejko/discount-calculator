@@ -10,6 +10,6 @@ import java.util.*;
 @Data
 public class Book {
 
-    private double price;
-    private Set<Discount> discounts;
+    private double          price;
+    private Set<Discount>   discounts;
 }

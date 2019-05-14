@@ -7,11 +7,13 @@ import pl.com.rst.books.model.discount.Discount;
 import pl.com.rst.books.model.discount.DiscountSummary;
 import pl.com.rst.books.model.discount.LargeOrderDiscount;
 import pl.com.rst.books.model.order.BookOrder;
-import pl.com.rst.books.model.order.CodesDiscount;
+import pl.com.rst.books.model.discount.CodesDiscount;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class DiscountCalculatorTest {
 
@@ -26,6 +28,9 @@ public class DiscountCalculatorTest {
     private Discount codeDiscountPercentType = new CodesDiscount(10.0d, Discount.DiscountType.PERCENT, false, Sets.newHashSet(DISCOUNT_CODE_AF, DISCOUNT_CODE_GC));
     private Discount codeDiscountMoneyType = new CodesDiscount(45.0d, Discount.DiscountType.MONEY, false, Sets.newHashSet(DISCOUNT_CODE_AF, DISCOUNT_CODE_GC));
 
+    private Discount codeDiscountPercentTypeOnly = new CodesDiscount(45.0d, Discount.DiscountType.PERCENT, true, Sets.newHashSet(DISCOUNT_CODE_AF, DISCOUNT_CODE_GC));
+    private Discount codeDiscountMoneyTypeOnly = new CodesDiscount(45.0d, Discount.DiscountType.MONEY, true, Sets.newHashSet(DISCOUNT_CODE_AF, DISCOUNT_CODE_GC));
+
     // TODO: provide asseration for comparing DiscountSummary objects regarding of: discount, applyedDiscounts
     @Test
     public void testCalculateLargeOrderDiscountPercentType() {
@@ -35,7 +40,7 @@ public class DiscountCalculatorTest {
         BookOrder order = new BookOrder(book, 20, null);
 
         // --- WHEN ---
-        DiscountSummary actual = discountCalculator.calculate(order);
+    DiscountSummary actual = discountCalculator.calculate(order);
 
         // --- THEN ---
         DiscountSummary expected = new DiscountSummary(25.0d, discounts);
@@ -113,5 +118,32 @@ public class DiscountCalculatorTest {
         assertThat(actual.getDiscount()).isEqualTo(expected.getDiscount());
         assertThat(expected.hasDiscount()).isTrue();
         assertThat(expected.getDiscounts()).containsAll(actual.getDiscounts());
+    }
+
+    @Test
+    public void testCalculateCodesDiscountMoneyTypeOnly() {
+        Set<Discount> discounts = Sets.newHashSet(largeOrderDiscountMoneyType, codeDiscountMoneyTypeOnly);
+        Book book = new Book(100.0d, discounts);
+        BookOrder order = new BookOrder(book, 20, new String[] {DISCOUNT_CODE_AF, DISCOUNT_CODE_GC});
+
+        // --- WHEN ---
+        DiscountSummary actual = discountCalculator.calculate(order);
+
+        // --- THEN ---
+        DiscountSummary expected = new DiscountSummary(90.0d, discounts);
+
+        assertThat(actual.getDiscount()).isEqualTo(expected.getDiscount());
+        assertThat(expected.hasDiscount()).isTrue();
+        assertThat(expected.getDiscounts()).containsAll(actual.getDiscounts());
+    }
+
+    @Test
+    public void testCalculateDiscountWhenMoreThatOneOnlyDiscount() {
+        Set<Discount> discounts = Sets.newHashSet(codeDiscountPercentTypeOnly, codeDiscountMoneyTypeOnly);
+        Book book = new Book(100.0d, discounts);
+        BookOrder order = new BookOrder(book, 20, new String[] {DISCOUNT_CODE_AF, DISCOUNT_CODE_GC});
+
+        // --- WHEN ---
+        assertThatThrownBy(() -> discountCalculator.calculate(order)).isInstanceOf(IllegalStateException.class);
     }
 }
