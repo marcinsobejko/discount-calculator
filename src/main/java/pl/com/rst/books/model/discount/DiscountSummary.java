@@ -7,12 +7,11 @@ import lombok.Getter;
 import java.util.Set;
 
 @AllArgsConstructor
-@Getter
 @Data
 public class DiscountSummary {
 
-    private double  discount;
-    Set<Discount>   discounts;
+    private double          discount;
+    private Set<Discount>   discounts;
 
     public boolean hasDiscount() {
         return !discounts.isEmpty();

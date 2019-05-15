@@ -31,7 +31,6 @@ public class DiscountCalculatorTest {
     private Discount codeDiscountPercentTypeOnly = new CodesDiscount(45.0d, Discount.DiscountType.PERCENT, true, Sets.newHashSet(DISCOUNT_CODE_AF, DISCOUNT_CODE_GC));
     private Discount codeDiscountMoneyTypeOnly = new CodesDiscount(45.0d, Discount.DiscountType.MONEY, true, Sets.newHashSet(DISCOUNT_CODE_AF, DISCOUNT_CODE_GC));
 
-    // TODO: provide asseration for comparing DiscountSummary objects regarding of: discount, applyedDiscounts
     @Test
     public void testCalculateLargeOrderDiscountPercentType() {
         // --- GIVEN ---
@@ -40,14 +39,12 @@ public class DiscountCalculatorTest {
         BookOrder order = new BookOrder(book, 20, null);
 
         // --- WHEN ---
-    DiscountSummary actual = discountCalculator.calculate(order);
+        DiscountSummary actual = discountCalculator.calculate(order);
 
         // --- THEN ---
         DiscountSummary expected = new DiscountSummary(25.0d, discounts);
 
-        assertThat(actual.getDiscount()).isEqualTo(expected.getDiscount());
-        assertThat(expected.hasDiscount()).isTrue();
-        assertThat(expected.getDiscounts()).containsAll(actual.getDiscounts());
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -63,9 +60,7 @@ public class DiscountCalculatorTest {
         // --- THEN ---
         DiscountSummary expected = new DiscountSummary(50.0d, discounts);
 
-        assertThat(actual.getDiscount()).isEqualTo(expected.getDiscount());
-        assertThat(expected.hasDiscount()).isTrue();
-        assertThat(expected.getDiscounts()).containsAll(actual.getDiscounts());
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -81,9 +76,7 @@ public class DiscountCalculatorTest {
         // --- THEN ---
         DiscountSummary expected = new DiscountSummary(0, Sets.newHashSet());
 
-        assertThat(actual.getDiscount()).isEqualTo(expected.getDiscount());
-        assertThat(expected.hasDiscount()).isFalse();
-        assertThat(expected.getDiscounts()).isEmpty();
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -98,9 +91,7 @@ public class DiscountCalculatorTest {
         // --- THEN ---
         DiscountSummary expected = new DiscountSummary(20.0d, discounts);
 
-        assertThat(actual.getDiscount()).isEqualTo(expected.getDiscount());
-        assertThat(expected.hasDiscount()).isTrue();
-        assertThat(expected.getDiscounts()).containsAll(actual.getDiscounts());
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -115,9 +106,7 @@ public class DiscountCalculatorTest {
         // --- THEN ---
         DiscountSummary expected = new DiscountSummary(90.0d, discounts);
 
-        assertThat(actual.getDiscount()).isEqualTo(expected.getDiscount());
-        assertThat(expected.hasDiscount()).isTrue();
-        assertThat(expected.getDiscounts()).containsAll(actual.getDiscounts());
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -130,11 +119,9 @@ public class DiscountCalculatorTest {
         DiscountSummary actual = discountCalculator.calculate(order);
 
         // --- THEN ---
-        DiscountSummary expected = new DiscountSummary(90.0d, discounts);
+        DiscountSummary expected = new DiscountSummary(90.0d, Sets.newHashSet(codeDiscountMoneyTypeOnly));
 
-        assertThat(actual.getDiscount()).isEqualTo(expected.getDiscount());
-        assertThat(expected.hasDiscount()).isTrue();
-        assertThat(expected.getDiscounts()).containsAll(actual.getDiscounts());
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
