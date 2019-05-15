@@ -1,14 +1,16 @@
 package pl.com.rst.books.model.discount;
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pl.com.rst.books.model.order.BookOrder;
 
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class LargeOrderDiscount extends Discount {
 
     private static final String NAME = "LARGE_ORDER_DISCOUNT";
 
-    private Integer minTreshold;
+    private final Integer minTreshold;
 
     public LargeOrderDiscount(Double value, DiscountType type, Boolean only, Integer minTreshold) {
         super(NAME, value, type, only);

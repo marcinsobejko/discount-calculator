@@ -1,17 +1,15 @@
 package pl.com.rst.books.model.discount;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import pl.com.rst.books.model.order.BookOrder;
 
-@AllArgsConstructor
 @Data
 public abstract class Discount {
 
-    private String          name;
-    private Double          value;
-    private DiscountType    type;
-    private Boolean         only;
+    private final String          name;
+    private final Double          value;
+    private final DiscountType    type;
+    private final Boolean         only;
 
     public enum DiscountType {
 

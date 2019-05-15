@@ -5,12 +5,10 @@ import pl.com.rst.books.model.discount.Discount;
 import pl.com.rst.books.model.discount.DiscountSummary;
 import pl.com.rst.books.model.order.BookOrder;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DefaultDiscountCalculator implements DiscountCalculator {
 
@@ -24,11 +22,11 @@ public class DefaultDiscountCalculator implements DiscountCalculator {
 
     private Set<Discount> findSuitableDiscounts(BookOrder order) {
         return findOnlyDiscount(order)
-                .map(disc -> (Set) Sets.newHashSet(disc))
+                .map(disc -> (Set<Discount>) Sets.newHashSet(disc))
                 .orElseGet(() -> findOtherDiscounts(order));
     }
 
-    Optional<Discount> findOnlyDiscount(BookOrder order) {
+    private Optional<Discount> findOnlyDiscount(BookOrder order) {
         List<Discount> discounts = order.getBook().getDiscounts().stream().
                 filter(d -> d.getOnly() && d.checkIfApply(order))
                 .collect(Collectors.toList());
@@ -40,7 +38,7 @@ public class DefaultDiscountCalculator implements DiscountCalculator {
         }
     }
 
-    Set<Discount> findOtherDiscounts(BookOrder order) {
+    private Set<Discount> findOtherDiscounts(BookOrder order) {
         return order.getBook().getDiscounts().stream().filter(d -> d.checkIfApply(order)).collect(Collectors.toSet());
     }
 

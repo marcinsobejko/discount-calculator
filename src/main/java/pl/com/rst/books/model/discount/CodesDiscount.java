@@ -10,8 +10,8 @@ public class CodesDiscount extends Discount {
 
     private static final String NAME = "CODE_DISCOUNT";
 
-    private Set<String> codes;
-    private Set<String> usedCodes;
+    private final Set<String> codes;
+    private final Set<String> usedCodes;
 
     public CodesDiscount(Double value, DiscountType type, Boolean only, Set<String> codes) {
         super(NAME, value, type, only);
@@ -22,13 +22,13 @@ public class CodesDiscount extends Discount {
 
     @Override
     public boolean checkIfApply(BookOrder order) {
-        return Arrays.stream(order.getDiscountCodes()).filter(code -> codes.contains(code)).count() > 0;
+        return Arrays.stream(order.getDiscountCodes()).filter(codes::contains).anyMatch(code -> true);
     }
 
     @Override
     public Double calculate(BookOrder order) {
         double discount = Arrays.stream(order.getDiscountCodes())
-                .filter(code -> codes.contains(code))
+                .filter(codes::contains)
                 .mapToDouble(code -> {
                     usedCodes.add(code);
                     return getType().calculate(order.getBook().getPrice(), getValue());

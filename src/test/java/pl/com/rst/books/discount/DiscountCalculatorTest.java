@@ -9,7 +9,6 @@ import pl.com.rst.books.model.discount.LargeOrderDiscount;
 import pl.com.rst.books.model.order.BookOrder;
 import pl.com.rst.books.model.discount.CodesDiscount;
 
-import java.util.Arrays;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
